@@ -1,5 +1,5 @@
 # CS SUBMIT - The implementation of Check50 Tools for autograding on code assignment
-
+#### Video Demo: [CS SUBMIT demo](https://youtu.be/_2CjOsBbmfw)
 This project is build to expand the use of CS50 code assignment checking tool call [check50](https://cs50.readthedocs.io/projects/check50/en/latest/)
 
 Me as a currently CS student also Teacher Assistant, I found out somethime on code assignment, We still have to manual check student code for grading, it's time consuming process
@@ -26,6 +26,11 @@ Developing stage, still on CLI
 [ ] Create documentation page when I have MVP
 
 This project still very early in development, But i will keep updating
+
+
+## Reference
+- My other problem repo [python check](https://github.com/Tong-ST/problems/python) That contain check for testing
+- An official [CS50 Check](https://github.com/cs50/problems) contain all the check that we can use as references
 
 ## Thanks
 - Thanks to all CS50 Teacher and Preceptor
