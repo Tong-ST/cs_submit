@@ -23,7 +23,7 @@ def main():
     cmd = ["check50", "--local", problem_path, "-o", "json"]
 
     result = subprocess.run(cmd, capture_output=True, text=True)
-    assign_name = get_assignment_name(problem_path)[0]
+    assign_name = get_assignment_name(problem_path)
     json_result = result_to_json(result.stdout)
     write_to_json(json_result)
 
@@ -42,7 +42,7 @@ def result_to_json(result):
     except json.JSONDecodeError:
         print("check50 did not return valid JSON")
         print(result)
-        exit(1)
+        raise ValueError()
     else:
         return data
 
@@ -96,7 +96,8 @@ def get_assignment_name(path):
     pattern = r".+/.+/.+/(.+)"
     matches = re.search(pattern, path, re.IGNORECASE)
     if matches:
-        return matches.groups()
+        return matches.group(1)
+    return None
 
 
 def read_submission():
