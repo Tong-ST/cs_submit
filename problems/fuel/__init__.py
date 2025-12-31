@@ -1,89 +1,63 @@
 import check50
-from re import escape
-
 
 @check50.check()
 def exists():
     """fuel.py exists"""
     check50.exists("fuel.py")
 
+@check50.check(exists)
+def test_e_zero():
+    """input of 0/100 yields E"""
+    check50.run("python fuel.py").stdin("0/100").stdout("E\n").exit()
 
 @check50.check(exists)
-def test_3_over_4():
-    """กรอก input 3/4 ต้องได้ output คือ 75%"""
-    input = "3/4"
-    output = "75%"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
-
+def test_e_one_percent():
+    """input of 1/100 yields E"""
+    check50.run("python fuel.py").stdin("1/100").stdout("E\n").exit()
 
 @check50.check(exists)
-def test_round_down():
-    """กรอก input 1/3 ต้องได้ output คือ 33%"""
-    input = "1/3"
-    output = "33%"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
-
+def test_f_full():
+    """input of 1/1 yields F"""
+    check50.run("python fuel.py").stdin("1/1").stdout("F\n").exit()
 
 @check50.check(exists)
-def test_round_up():
-    """กรอก input 2/3 ต้องได้ output คือ 67%"""
-    input = "2/3"
-    output = "67%"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
-
+def test_f_ninety_nine():
+    """input of 99/100 yields F"""
+    check50.run("python fuel.py").stdin("99/100").stdout("F\n").exit()
 
 @check50.check(exists)
-def test_empty():
-    """กรอก input 0/100 ต้องได้ output คือ E"""
-    input = "0/100"
-    output = "E"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
-
+def test_fifty_percent():
+    """input of 1/2 yields 50%"""
+    check50.run("python fuel.py").stdin("1/2").stdout("50%\n").exit()
 
 @check50.check(exists)
-def test_full():
-    """กรอก input 100/100 ต้องได้ output คือ F"""
-    input = "100/100"
-    output = "F"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
-
-
+def test_twenty_five_percent():
+    """input of 1/4 yields 25%"""
+    check50.run("python fuel.py").stdin("1/4").stdout("25%\n").exit()
 
 @check50.check(exists)
-def test_ZeroDivisionError():
-    """กรอก input 100/0 โปรแกรมต้องให้กรอก input ใหม่"""
-    input = "100/0"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).reject()
-
+def test_seventy_five_percent():
+    """input of 3/4 yields 75%"""
+    check50.run("python fuel.py").stdin("3/4").stdout("75%\n").exit()
 
 @check50.check(exists)
-def test_numerator_greater_than_denominator():
-    """กรอก input 10/3 โปรแกรมต้องให้กรอก input ใหม่"""
-    input = "10/3"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).reject()
-
+def test_two_percent():
+    """input of 2/100 yields 2%"""
+    check50.run("python fuel.py").stdin("2/100").stdout("2%\n").exit()
 
 @check50.check(exists)
-def test_str_conversion():
-    """กรอก input three/four โปรแกรมต้องให้กรอก input ใหม่"""
-    input = "three/four"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).reject()
-
+def test_ninety_eight_percent():
+    """input of 98/100 yields 98%"""
+    check50.run("python fuel.py").stdin("98/100").stdout("98%\n").exit()
 
 @check50.check(exists)
-def test_float_numerator(): 
-    """กรอก input 1.5/4 โปรแกรมต้องให้กรอก input ใหม่"""
-    input = "1.5/4"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).reject()
-
-
-@check50.check(exists)
-def test_negative_fraction():
-    """กรอก input -1/4 โปรแกรมต้องให้กรอก input ใหม่"""
-    input = "-1/4"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).reject()
-
-
-def regex(percent):
-    """match case-insensitively with only whitespace on either side"""
-    return fr'(?i)^\s*{escape(percent)}\s*$'
+def test_invalid_input_then_valid():
+    """handles non-numeric, division by zero, and x > y inputs"""
+    (check50.run("python fuel.py")
+            .stdin("cat/dog")
+            .stdin("1/0")
+            .stdin("5/1")
+            .stdin("-1/10")
+            .stdin("3/4")
+            .stdout("75%\n")
+            .exit())

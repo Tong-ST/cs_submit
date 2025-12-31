@@ -1,3 +1,5 @@
 check50
 tabulate
 pytest
+dotenv
+google-genai

@@ -28,6 +28,13 @@ Developing stage, still on CLI
 This project still very early in development, But i will keep updating
 
 
+## Using AI to create check50
+In this project I use gemini, it's free to get started and test
+- To run `python check_gen.py`
+- Requirements `google-genai`, `dotenv` for API KEY
+- See an official [Google AI API doc](https://ai.google.dev/gemini-api/docs/quickstart)
+- In your .env file ADD `GEMINI_API_KEY="YOUR_GEMINI_API_KEY"`
+
 ## Reference
 - My other problem repo [python check](https://github.com/Tong-ST/problems/python) That contain check for testing
 - An official [CS50 Check](https://github.com/cs50/problems) contain all the check that we can use as references
