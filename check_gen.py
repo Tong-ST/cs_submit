@@ -8,6 +8,7 @@ def main():
     assignment_name, assignment_desc, solution_code = create_check_prompt()
 
     checks = generate_check50_tests(assignment_name, assignment_desc, solution_code)
+    print(checks)
 
     with open("__init__.py", "w") as file:
         file.write(checks)
@@ -38,8 +39,9 @@ def build_prompt(name, description, solution):
     - Test valid input
     - Test invalid input and re-prompt
     - Do NOT include explanations, only code
+    - Do NOT include ``` python ``` just ready to use code
     - Use check50.run(), stdin(), stdout()
-    - just pure code ready to use __init__.py file
+    - Test explaination in Thai For Example กรอก input ... ได้ Output คือ ...
 
     Output ONLY valid Python code.
     """
