@@ -3,13 +3,20 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-gemini_model = ["gemini-3-flash-preview", "gemini-2.5-flash", "gemini-3-pro-preview", "gemini-2.5-pro"]
+gemini_model = [
+    "gemini-3-flash-preview",
+    "gemini-2.5-flash",
+    "gemini-3-pro-preview",
+    "gemini-2.5-pro",
+]
 
 
 def main():
     assignment_name, assignment_desc, solution_code, pattern, test_amt = create_check_prompt()
 
-    checks = generate_check50_tests(assignment_name, assignment_desc, solution_code, pattern, test_amt)
+    checks = generate_check50_tests(
+        assignment_name, assignment_desc, solution_code, pattern, test_amt
+    )
     print(checks)
 
     with open("__init__.py", "w") as file:
@@ -44,18 +51,23 @@ def build_prompt(name, description, solution, pattern, test_amt=(2, 10)):
     - Test valid input
     - Test invalid input and re-prompt
     - Do NOT include explanations, only code
-    - Do NOT include ``` python ``` just ready to use code
+    - Do NOT include ``` python ``` ONLY READY TO USE CODE
     - Use check50.run(), stdin(), stdout()
     - For try & except test, Can use .reject() to pass the test
-    - Test explaination in Thai For Example กรอก input ... ได้ Output คือ ...
+    - Test explaination in Thai For Example """กรอก input ... ได้ output ..."""
     - Minimum test function is {test_amt[0]} and Maximum is {test_amt[1]}
     - ONLY ONE check50.run() for each check function created
 
     Output ONLY valid Python code.
     '''
 
-def generate_check50_tests(assignment_name, assignment_description, reference_solution, pattern, test_amt):
-    prompt = build_prompt(assignment_name, assignment_description, reference_solution, pattern, test_amt)
+
+def generate_check50_tests(
+    assignment_name, assignment_description, reference_solution, pattern, test_amt
+):
+    prompt = build_prompt(
+        assignment_name, assignment_description, reference_solution, pattern, test_amt
+    )
 
     code = call_ai(prompt)
 
@@ -64,15 +76,15 @@ def generate_check50_tests(assignment_name, assignment_description, reference_so
 
 def create_check_prompt():
     assignment_name = "fuel"
-    assignment_desc = '''
-    Write a program fuel.py that:
-    - Prompts for X/Y
-    - Re-prompts until valid
-    - Prints E, F, or percentage
-    - Replicate of car fuel gauge
-    '''
+    assignment_desc = """
+    ให้เขียนโปรแกรมชื่อว่า fuel.py ตามโจทย์ต่อไปนี้:
+    - โปรแกรมสำหรับคำนวณน้ำมันรถ เช่นกรอก 3/4 จะได้ผลลัพธ์คือ 75%, 4/4 จะได้ผลลัพธ์คือ F, 0/4 จะได้ผลลัพธ์คือ E, -1/4 โปรแกรมจะขอ input ใหม่, cat/dog โปรแกรมจะขอ input ใหม่
+    - เรียกให้กรอก Input X กับ Y
+    - เรียกซ้ำจนกว่าจะได้รับค่าตัวเลขที่ถูกต้องโดยใช้ try & except
+    - print E เมื่อน้ำมันต่ำกว่า 1% , print F เมื่อน้ำมันมากกว่า 99%, หรือ print เปอร์เซ็นต์นั้นๆ
+    """
 
-    solution_code = '''
+    solution_code = """
     while True:
         try:
             fuel = input("Fraction: ")
@@ -91,7 +103,7 @@ def create_check_prompt():
         print("E")
     else:
         print(f"{percent}%")
-    '''
+    """
 
     pattern = '''
     import check50 # A MUST
@@ -104,7 +116,7 @@ def create_check_prompt():
 
     @check50.check(exists) # Need to pass file exists check function before can run this test
     def test_valid_function():
-        """กรอก input ... ได้ผลลัพธ์ ..."""
+        """กรอก input ... ได้ output..."""
         input = "..."
         output = "..."
         check50.run("python3 file.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit() # Test logic
@@ -121,9 +133,9 @@ def create_check_prompt():
 
     def regex(text): # OPTIONAL helper function for ouput correctness
         """match case-insensitively with only whitespace on either side"""
-        return fr'(?i)^*{re.escape(text)}*$'
+        return fr'(?i)^\s*{re.escape(text)}\s*$'
     '''
-    
+
     test_amt = (4, 8)
 
     return assignment_name, assignment_desc, solution_code, pattern, test_amt
