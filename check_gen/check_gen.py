@@ -14,9 +14,9 @@ gemini_model = [
 
 def main():
     assignment = load_yaml("assignments/fuel.yaml")
-    patterns = load_yaml("patterns.yaml")
+    pattern = load_yaml("patterns.yaml")
 
-    checks = generate_check50_tests(assignment, patterns["INOUT_CHECK"])
+    checks = generate_check50_tests(assignment, pattern)
     print(checks)
 
     with open("__init__.py", "w") as file:
@@ -48,12 +48,12 @@ def build_prompt(assignment, pattern):
     {assignment["solution_code"]}
 
     Reference good check pattern:
-    {pattern}
+    {pattern["CHECK_INPUT_OUTPUT"]}
     
     Requirements:
-    - Use check50 API
+    - Use check50 Python API
     - Only code output
-    - One run per test
+    - ONLY ONE check50.run() for each check function created
     - Do NOT include ``` python ```, ONLY READY TO USE CODE
     - Thai descriptions
     - Minimum tests function is {assignment['test_amount']['min']} and Maximum is: {assignment['test_amount']['max']}

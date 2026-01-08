@@ -1,4 +1,4 @@
-INOUT_CHECK: |
+CHECK_INPUT_OUTPUT: |
   import check50 # A MUST
   import re # OPTIONAL FOR regex test
 
