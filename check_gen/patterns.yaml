@@ -1,0 +1,29 @@
+INOUT_CHECK: |
+  import check50 # A MUST
+  import re # OPTIONAL FOR regex test
+
+  @check50.check() # A MUST to create each check
+  def exists(): # A MUST for most assignment
+      """ตรวจสอบว่ามีไฟล์ file.py""" # Test explaination
+      check50.exists("file.py") # Check if required file exists?
+
+  @check50.check(exists) # Need to pass file exists check function before can run this test
+  def test_valid_function():
+      """กรอก input ... ได้ output..."""
+      input = "..."
+      output = "..."
+      check50.run("python3 file.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit() # Test logic
+
+      # ONLY ONE check50.run() for each check function created
+
+  @check50.check(exists)
+  def test_invalid_function(): # ONLY IF assignment require try & except logic
+      """กรอก input ... โปรแกรมจะต้องให้กรอกใหม่ """
+      input = "..."
+      check50.run("python3 file.py").stdin(input, prompt=True).reject() # Test try & except use .reject() for invalid to pass the test
+
+      # ONLY ONE check50.run() for each check function created
+
+  def regex(text): # OPTIONAL helper function for ouput correctness
+      """match case-insensitively with only whitespace on either side"""
+      return fr'(?i)^\s*{re.escape(text)}\s*$'

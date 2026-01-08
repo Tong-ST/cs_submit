@@ -7,8 +7,7 @@ __pycache__/
 *.so
 
 # Data files
-*.json
-*.csv
+data/
 
 # Terminal Demo
 *.cast
